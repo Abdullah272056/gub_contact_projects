@@ -2,25 +2,81 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:email_launcher/email_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'Colors/colors.dart';
+
 
 class TeacherInfoDetailsScreen extends StatefulWidget {
-  const TeacherInfoDetailsScreen({Key? key}) : super(key: key);
+  String name ;
+  String email ;
+  String designation ;
+  String department ;
+  String roomNo ;
+  String primaryNumber ;
+  String secondaryNumber;
+  String image;
+
+
+  TeacherInfoDetailsScreen(
+  {
+    required this.name,
+    required this.email,
+    required this.designation,
+    required this.department,
+    required this.roomNo,
+    required this.primaryNumber,
+    required this.secondaryNumber,
+    required this.image
+    }
+    ); // TeacherInfoDetailsScreen({Key? key}) : super(key: key);
 
   @override
   State<TeacherInfoDetailsScreen> createState() =>
-      _ContactListScreenState();
+      _TeacherInfoDetailsScreenState(
+          this.name,
+          this.email,
+          this.designation,
+          this.department,
+          this.roomNo,
+          this.primaryNumber,
+          this.secondaryNumber,
+          this.image
+      );
 }
 
-class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
-
+class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
 
   List _teacherInfoList = [];
+
+  String _name="";
+  String _email="";
+  String _designation="";
+  String _department="";
+  String _roomNo="";
+  String _primaryNumber="";
+  String _secondaryNumber="";
+  String _image="";
+  _TeacherInfoDetailsScreenState(
+          this._name,
+         this._email,
+         this._designation,
+         this._department,
+         this._roomNo,
+         this._primaryNumber,
+         this._secondaryNumber,
+         this._image
+
+      );
+
+
+
+
 
 
   @override
@@ -28,7 +84,7 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
     super.initState();
 
 
-      _getMostVisitedCourseDataList();
+     // _getMostVisitedCourseDataList();
 
   }
 
@@ -56,7 +112,7 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
 
                          fit: BoxFit.fill,
                          placeholder: 'assets/images/images_avater.png',
-                         image:"https://www.wallpaperflare.com/static/183/937/164/gerard-butler-man-brunette-coat-wallpaper.jpg",
+                         image:_image,
                          imageErrorBuilder: (context, url, error) =>
                              Image.asset(
                                'assets/images/images_avater.png',
@@ -65,8 +121,7 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                        ),
                      )),
                  SizedBox(height: 10,),
-                 Text(
-                   "Abdullah Al Aman",
+                 Text(_name,
                    overflow: TextOverflow.ellipsis,
                    style: TextStyle(
                        color:Colors.white,
@@ -111,6 +166,8 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                   child:SingleChildScrollView(
                     child: Column(
                       children: [
+
+                        _buildINfoItem("Name",_name),
                         Container(
                           margin: EdgeInsets.only(right: 20.0, top: 0, bottom: 7, left: 20),
                           //width: 180,
@@ -156,10 +213,10 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                                 children:  [
                                                   Expanded(
                                                     child: Text(
-                                                      "Name",
+                                                      "Email",
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
-                                                          color:Colors.black,
+                                                          color:teacherDetailsItemKeyTextColorColor,
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
@@ -174,6 +231,7 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                               ),
 
                                             ),
+                                            SizedBox(height: 5,),
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Flex(
@@ -181,10 +239,10 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                                 children:  [
                                                   Expanded(
                                                     child: Text(
-                                                      "MD. RIAD HASSAN",
+                                                      _email,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
-                                                          color:Colors.black,
+                                                          color:teacherDetailsItemValueTextColorColor,
                                                           fontSize: 13,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
@@ -204,12 +262,22 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                       )
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.call,size: 27,
+                                    icon: const Icon(Icons.email,size: 27,
                                       color: Colors.green,
                                     ),
-                                    // tooltip: 'Increase volume by 10',
-                                    onPressed: (){
-                                      _callNumber("01994215664");
+                                    onPressed: () async {
+                                      String email = Uri.encodeComponent(_email);
+                                      // String email = Uri.encodeComponent("mail@fluttercampus.com");
+                                      // String subject = Uri.encodeComponent("Hello Flutter");
+                                      // String body = Uri.encodeComponent("Hi! I'm Flutter Developer");
+
+                                      Uri mail = Uri.parse("mailto:$email");
+                                      // Uri mail = Uri.parse("mailto:$email?subject=$subject&body=$body");
+                                      if (await launchUrl(mail)) {
+                                      //email app opened
+                                      }else{
+                                      //email app is not opened
+                                      }
                                     },
                                   )
                                 ],
@@ -262,10 +330,10 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                                 children:  [
                                                   Expanded(
                                                     child: Text(
-                                                      "Phone",
+                                                      "Primary Phone Number",
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
-                                                          color:Colors.black,
+                                                          color:teacherDetailsItemKeyTextColorColor,
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
@@ -280,6 +348,8 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                               ),
 
                                             ),
+                                            SizedBox(height: 5,),
+
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: Flex(
@@ -287,10 +357,10 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                                 children:  [
                                                   Expanded(
                                                     child: Text(
-                                                      "01994215664",
+                                                      _primaryNumber,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
-                                                          color:Colors.black,
+                                                          color:teacherDetailsItemValueTextColorColor,
                                                           fontSize: 13,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
@@ -315,7 +385,114 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                     ),
                                     // tooltip: 'Increase volume by 10',
                                     onPressed: (){
-                                      _callNumber("01994215664");
+                                      _callNumber(_primaryNumber);
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 20.0, top: 0, bottom: 10, left: 20),
+                          //width: 180,
+                          decoration: new BoxDecoration(
+                            color:Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [BoxShadow(
+
+                                color: Colors.grey.withOpacity(.25),
+                                //  blurRadius: 20.0, // soften the shadow
+                                blurRadius:20, // soften the shadow
+                                spreadRadius: 0.0, //extend the shadow
+                                offset: Offset(
+                                  2.0, // Move to right 10  horizontally
+                                  1.0, // Move to bottom 10 Vertically
+                                )
+                            )],
+                          ),
+                          //   height: 150,
+                          child:Container(
+                            margin: EdgeInsets.only(right: 10.0, top: 10, bottom: 10, left: 10),
+                            //color: Colors.white,
+                            child: SizedBox(
+                              child: Flex(
+                                direction: Axis.horizontal,
+                                children: [
+
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child:Container(
+
+                                        child: Column(
+
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          // direction: Axis.vertical,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Flex(
+                                                direction: Axis.horizontal,
+                                                children:  [
+                                                  Expanded(
+                                                    child: Text(
+                                                      "Secondary Phone Number:",
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color:teacherDetailsItemKeyTextColorColor,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w500),
+                                                      softWrap: false,
+                                                      maxLines: 1,
+                                                    ),
+
+
+                                                  ),
+                                                  SizedBox(width: 7,),
+
+                                                ],
+                                              ),
+
+                                            ),
+                                            SizedBox(height: 5,),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Flex(
+                                                direction: Axis.horizontal,
+                                                children:  [
+                                                  Expanded(
+                                                    child: Text(
+                                                      _secondaryNumber,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color:teacherDetailsItemValueTextColorColor,
+                                                          fontSize: 13,
+                                                          fontWeight: FontWeight.w500),
+                                                      softWrap: false,
+                                                      maxLines: 1,
+                                                    ),
+
+
+                                                  ),
+                                                  SizedBox(width: 5,),
+
+                                                ],
+                                              ),
+
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.call,size: 27,
+                                      color: Colors.green,
+                                    ),
+                                    // tooltip: 'Increase volume by 10',
+                                    onPressed: (){
+                                      _callNumber(_secondaryNumber);
                                     },
                                   )
                                 ],
@@ -324,10 +501,10 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                           ),
                         ),
 
-                        _buildINfoItem("designation","Lecturer"),
-                        _buildINfoItem("department","CSE"),
-                        _buildINfoItem("designation","Lecturer"),
-                        _buildINfoItem("Room","B400"),
+                        _buildINfoItem("Designation",_designation),
+                        _buildINfoItem("Department",_department),
+                        // _buildINfoItem("Designation","Lecturer"),
+                        _buildINfoItem("Room",_roomNo),
                         // _buildINfoItem("designation","Lecturer");
 
                       ],
@@ -336,6 +513,17 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                 )
               ],
             )));
+  }
+  void _launchEmail() async {
+    List<String> to = "abdullah@gmail.com".split(',');
+    Email email = Email(to: to,);
+    EmailLauncher.launch(email).then((value) {
+      // success
+      print(value);
+    }).catchError((error) {
+      _showToast("error");
+      print(error);
+    });
   }
   Widget _buildINfoItem(String keyName, String keyValue) {
     return Container(
@@ -386,7 +574,7 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                   keyName,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      color:Colors.black.withOpacity(0.5),
+                                      color:teacherDetailsItemKeyTextColorColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
                                   softWrap: false,
@@ -412,7 +600,7 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
                                   keyValue,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                      color:Colors.black,
+                                      color:teacherDetailsItemValueTextColorColor,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
                                   softWrap: false,
@@ -490,6 +678,23 @@ class _ContactListScreenState extends State<TeacherInfoDetailsScreen> {
         fontSize: 16.0);
   }
 
+  // Future<void> _launchUrl( email) async {
+  //   if (!await launchUrl(_url)) {
+  //     throw 'Could not launch $_url';
+  //   }
+  // }
+  // void _launchURL() async {
+  //   final Uri params = Uri(
+  //     scheme: 'mailto',
+  //     path: 'my.mail@example.com',
+  //   );
+  //   String  url = params.toString();
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     print( 'Could not launch $url');
+  //   }
+  // }
 
   _callNumber(String phoneNumber) async {
     String number = phoneNumber;

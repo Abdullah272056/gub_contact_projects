@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gub_contact/teacher_info_details.dart';
 
-import 'most_visited_course_page.dart';
+import 'teacher_contact_list.dart';
 
 
 void main() {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          body:TeacherInfoDetailsScreen()
+          body:ContactListScreen()
 
       ),
     );

@@ -40,7 +40,11 @@ dependencies:
   http: ^0.13.0
   fluttertoast: ^8.0.8
   url_launcher: ^6.1.7
+  email_launcher: ^1.1.1
+
   flutter_phone_direct_caller: ^2.1.1
+  #shimmer
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
