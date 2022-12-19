@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gub_contact/teacher_info_details.dart';
 
+import 'log_in.dart';
 import 'teacher_contact_list.dart';
 
 
@@ -28,7 +29,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           body:ContactListScreen()
-
       ),
     );
   }

@@ -11,6 +11,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Colors/colors.dart';
+import 'note.dart';
+import 'notes_database.dart';
 
 
 class ContactListScreen extends StatefulWidget {
@@ -26,15 +28,64 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   List _teacherInfoList = [];
   int _darkOrLightStatus = 1;
-  bool _shimmerStatus = true;
+  bool _shimmerStatus = false;
+  List<Note> notesList=[];
+  bool isLoading =false;
+
 
   @override
-  void initState() {
+  @mustCallSuper
+  initState() {
     super.initState();
+    _getMostVisitedCourseDataList();
+    refreshNotes();
 
+  }
 
-      _getMostVisitedCourseDataList();
+  @override
+  void dispose() {
+    NotesDataBase.instance.close();
+    super.dispose();
 
+  }
+
+  Future refreshNotes() async {
+    NotesDataBase.instance;
+    setState(() {
+      isLoading=true;
+    });
+    this.notesList=await NotesDataBase.instance.readAllNotes();
+    _showToast(notesList.length.toString());
+    setState(() {
+      isLoading=false;
+    });
+
+  }
+
+  Future refreshNotes1() async {
+    NotesDataBase.instance;
+    setState(() {
+      isLoading=true;
+    });
+    this.notesList=await NotesDataBase.instance.readAllNotes();
+
+    _showToast(notesList.length.toString());
+
+    setState(() {
+      isLoading=false;
+    });
+
+  }
+
+  _showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   @override
@@ -56,6 +107,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
               // height: 30,
             ),
 
+
+
             Expanded(
               child: _buildBottomDesignForList(),
             ),
@@ -68,6 +121,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
       ),
     );
   }
+
+
 
   Widget _buildBottomDesignForList() {
     return Container(
@@ -87,38 +142,42 @@ class _ContactListScreenState extends State<ContactListScreen> {
                   child:_shimmerStatus==false?
                   ListView.builder(
                     padding: EdgeInsets.only(top: 0),
-                      itemCount: _teacherInfoList==null||_teacherInfoList.length<=0?0:
-                      _teacherInfoList.length,
+                      itemCount: notesList==null||notesList.length<=0?0:
+                      notesList.length,
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return
                           //Container();
 
-                          _buildMostVisitedCourseItemForList(_teacherInfoList[index]);
+                          _buildMostVisitedCourseItemForList(notesList[index]);
+
+
+
                       }):contactListShimmer(),
                 )
               ],
             )));
   }
 
-  Widget _buildMostVisitedCourseItemForList(var response) {
+
+  Widget _buildMostVisitedCourseItemForList(Note response) {
     return InkResponse(
       onTap: (){
-        // _showToast("ok");
-       Navigator.push(context,MaterialPageRoute(builder: (context)=>
-           TeacherInfoDetailsScreen(
-             name: response["name"].toString(),
-             email: response["email"].toString(),
-             designation: response["designation"].toString(),
-             department: response["department"].toString(),
-             roomNo: response["room"].toString(),
-             primaryNumber: response["primaryPhone"].toString(),
-             secondaryNumber: response["secondaryPhone"].toString(),
-             image:response["photo"].toString(),
 
-           )
-       ));
+        // Navigator.push(context,MaterialPageRoute(builder: (context)=>
+        //     TeacherInfoDetailsScreen(
+        //       name: response["name"].toString(),
+        //       email: response["email"].toString(),
+        //       designation: response["designation"].toString(),
+        //       department: response["department"].toString(),
+        //       roomNo: response["room"].toString(),
+        //       primaryNumber: response["primaryPhone"].toString(),
+        //       secondaryNumber: response["secondaryPhone"].toString(),
+        //       image:response["photo"].toString(),
+        //
+        //     )
+        // ));
       },
       child:
       Container(
@@ -129,14 +188,14 @@ class _ContactListScreenState extends State<ContactListScreen> {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [BoxShadow(
 
-            color: Colors.grey.withOpacity(.25),
-            //  blurRadius: 20.0, // soften the shadow
-            blurRadius:20, // soften the shadow
-            spreadRadius: 0.0, //extend the shadow
-            offset: Offset(
-              2.0, // Move to right 10  horizontally
-              1.0, // Move to bottom 10 Vertically
-            )
+              color: Colors.grey.withOpacity(.25),
+              //  blurRadius: 20.0, // soften the shadow
+              blurRadius:20, // soften the shadow
+              spreadRadius: 0.0, //extend the shadow
+              offset: Offset(
+                2.0, // Move to right 10  horizontally
+                1.0, // Move to bottom 10 Vertically
+              )
           )],
         ),
         //   height: 150,
@@ -157,7 +216,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                         width: 90,
                         fit: BoxFit.fill,
                         placeholder: 'assets/images/images_avater.png',
-                        image:response["photo"],
+                        image:response.photo,
                         imageErrorBuilder: (context, url, error) =>
                             Image.asset(
                               'assets/images/images_avater.png',
@@ -183,7 +242,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    response["name"].toString(),
+                                    response.name.toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
@@ -208,7 +267,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    response["primaryPhone"].toString(),
+                                    response.primaryPhone.toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
@@ -233,7 +292,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    response["email"].toString(),
+                                    response.email.toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
@@ -258,7 +317,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    response["department"].toString()+" (${response["designation"].toString()})"
+                                    response.department.toString()+" (${response.designation.toString()})"
                                     ,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -282,10 +341,10 @@ class _ContactListScreenState extends State<ContactListScreen> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.call,size: 27,
-                  color: Colors.green,
+                    color: Colors.green,
                   ),
                   onPressed: (){
-                    _callNumber(response["primaryPhone"].toString());
+                    _callNumber(response.primaryPhone.toString());
                     // _callNumber("01994215664");
                   },
                 )
@@ -468,7 +527,13 @@ class _ContactListScreenState extends State<ContactListScreen> {
               var data = jsonDecode(response.body);
               _teacherInfoList = data["contacts"];
               _shimmerStatus=false;
-            //  _showToast(_teacherInfoList.length.toString());
+
+
+              setState(() {
+                insertData(data["contacts"]);
+              });
+
+              //  _showToast(_teacherInfoList.length.toString());
 
             });
           }
@@ -486,7 +551,39 @@ class _ContactListScreenState extends State<ContactListScreen> {
     }
   }
 
-  _showToast(String message) {
+
+  void insertData(List teacherInfoList){
+
+    // _showToast("length"+teacherInfoList.length.toString());
+
+    NotesDataBase.instance.deleteAll();
+    for(int i=0;i<teacherInfoList.length;i++){
+
+
+      Note abc= Note(
+        name: teacherInfoList[i]["name"],
+        designation:  teacherInfoList[i]["designation"],
+        department:  teacherInfoList[i]["department"],
+        primaryPhone:  teacherInfoList[i]["primaryPhone"],
+        // secondaryPhone:  teacherInfoList[i]["secondaryPhone"],
+        secondaryPhone:  "",
+        email:  teacherInfoList[i]["email"],
+        pbx: teacherInfoList[i]["pbx"],
+        room:  teacherInfoList[i]["room"],
+        details: teacherInfoList[i]["details"],
+        photo:  teacherInfoList[i]["photo"],
+        userId: teacherInfoList[i]["_id"],
+        // id: 1,
+
+      );
+      NotesDataBase.instance.create( abc);
+
+    }
+
+    refreshNotes();
+  }
+
+  _showToast1(String message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
