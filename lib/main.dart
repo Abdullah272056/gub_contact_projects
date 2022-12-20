@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gub_contact/splash_screen.dart';
 import 'package:gub_contact/teacher_info_details.dart';
 
 import 'log_in.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          body:ContactListScreen()
+          body:SplashScreen()
+          // body:ContactListScreen()
       ),
     );
   }

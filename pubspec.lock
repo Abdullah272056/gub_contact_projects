@@ -43,6 +43,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  delayed_display:
+    dependency: "direct main"
+    description:
+      name: delayed_display
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  delayed_widget:
+    dependency: "direct main"
+    description:
+      name: delayed_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   email_launcher:
     dependency: "direct main"
     description:

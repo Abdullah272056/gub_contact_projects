@@ -46,6 +46,8 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.11
   fluttertoast: ^8.1.1
+  delayed_widget: ^1.1.2
+  delayed_display: ^2.0.0
 
   flutter_phone_direct_caller: ^2.1.1
   #shimmer
