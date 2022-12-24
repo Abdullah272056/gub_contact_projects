@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gub_contact">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="gub_contact"
+        android:label="GUB CONTACTS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

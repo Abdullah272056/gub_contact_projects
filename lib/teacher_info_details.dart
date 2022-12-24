@@ -438,7 +438,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                                 children:  [
                                                   Expanded(
                                                     child: Text(
-                                                      "Secondary Phone Number:",
+                                                      "Secondary Phone Number",
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           color:teacherDetailsItemKeyTextColorColor,
@@ -463,8 +463,8 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                                 direction: Axis.horizontal,
                                                 children:  [
                                                   Expanded(
-                                                    child: Text(
-                                                      _secondaryNumber,
+                                                    child: Text(_secondaryNumber!=""?
+                                                      _secondaryNumber:"----------------",
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           color:teacherDetailsItemValueTextColorColor,

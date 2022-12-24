@@ -2,8 +2,10 @@
 class Assets {
   Assets._();
 
+  static const String imagesAppLogo = 'assets/images/app_logo.png';
+  static const String imagesGubLogo = 'assets/images/gub_logo.png';
   static const String imagesImagesAvater = 'assets/images/images_avater.png';
-  static const String imagesLogo = 'assets/images/gub_logo.png';
+  static const String imagesPlayStoreLogo = 'assets/images/play_store_logo.png';
   static const String imagesYoutube = 'assets/images/youtube.png';
 
 }

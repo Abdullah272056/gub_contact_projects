@@ -11,10 +11,12 @@ import 'teacher_contact_list.dart';
 void main() {
   runApp( MyApp());
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    // systemNavigationBarColor: Color(0xFF000000),
+    // systemNavigationBarColor: Color(0xFF00BE56),
+    systemNavigationBarColor: Colors.green,
+
     // systemNavigationBarIconBrightness: Brightness.light,
     // systemNavigationBarDividerColor: null,
-    statusBarColor: Colors.transparent,
+    statusBarColor: Colors.green,
     statusBarIconBrightness: Brightness.dark,
     statusBarBrightness: Brightness.dark,
   ));

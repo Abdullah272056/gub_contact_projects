@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +12,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Colors/colors.dart';
+import 'department_database.dart';
+import 'department_note.dart';
 import 'note.dart';
 import 'notes_database.dart';
 
@@ -27,18 +30,25 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
 
   List _teacherInfoList = [];
+  List _departmentList = [];
   int _darkOrLightStatus = 1;
   bool _shimmerStatus = false;
   List<Note> notesList=[];
+  List<Note> notesListCopy=[];
+  List<DepartmentNote> departmentNotesList=[];
   bool isLoading =false;
 
+  String selectAssignmentId="";
 
   @override
   @mustCallSuper
   initState() {
     super.initState();
     _getMostVisitedCourseDataList();
+    _getDepartmentDataList();
     refreshNotes();
+
+    refreshDepartmentNotes();
 
   }
 
@@ -55,21 +65,26 @@ class _ContactListScreenState extends State<ContactListScreen> {
       isLoading=true;
     });
     this.notesList=await NotesDataBase.instance.readAllNotes();
-    _showToast(notesList.length.toString());
+
+    this.notesListCopy=notesList;
+    _showToast("notesListCopy"+notesListCopy.length.toString());
+
+
     setState(() {
       isLoading=false;
     });
 
   }
 
-  Future refreshNotes1() async {
-    NotesDataBase.instance;
+  Future refreshDepartmentNotes() async {
+    DepartmentDataBase.instance;
     setState(() {
       isLoading=true;
     });
-    this.notesList=await NotesDataBase.instance.readAllNotes();
 
-    _showToast(notesList.length.toString());
+    this.departmentNotesList=await DepartmentDataBase.instance.readAllNotes();
+
+    // _showToast("aas= "+departmentNotesList.length.toString());
 
     setState(() {
       isLoading=false;
@@ -77,7 +92,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   }
 
-  _showToast(String message) {
+  _showToas(String message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,
@@ -97,15 +112,54 @@ class _ContactListScreenState extends State<ContactListScreen> {
         child: Flex(
           direction: Axis.vertical,
           children: [
+
+
             SizedBox(
-              height: MediaQuery.of(context).size.height / 16,
+              height: MediaQuery.of(context).size.height / 18,
               // height: 50,
             ),
+            Flex(
+              direction: Axis.horizontal,
+              children: [
+                // Container(
+                //   margin: new EdgeInsets.only(left: 30),
+                //   child: InkResponse(
+                //     onTap: () {
+                //     //  Navigator.of(context).pop();
+                //     },
+                //     child: Icon(
+                //       Icons.arrow_back,
+                //       color: Colors.white,
+                //       size: 30.0,
+                //     ),
+                //   ),
+                // ),
+                Expanded(
+                    child: Container(
+                      margin: new EdgeInsets.only(left: 25),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Teacher Contacts",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    )),
 
+
+
+              ],
+            ),
+            userInputSelectTopic(),
             SizedBox(
               height: MediaQuery.of(context).size.height / 30,
               // height: 30,
             ),
+
 
 
 
@@ -142,17 +196,13 @@ class _ContactListScreenState extends State<ContactListScreen> {
                   child:_shimmerStatus==false?
                   ListView.builder(
                     padding: EdgeInsets.only(top: 0),
-                      itemCount: notesList==null||notesList.length<=0?0:
-                      notesList.length,
+                      itemCount: notesListCopy==null||notesListCopy.length<=0?0:
+                      notesListCopy.length,
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return
-                          //Container();
-
-                          _buildMostVisitedCourseItemForList(notesList[index]);
-
-
+                          _buildMostVisitedCourseItemForList(notesListCopy[index]);
 
                       }):contactListShimmer(),
                 )
@@ -164,20 +214,19 @@ class _ContactListScreenState extends State<ContactListScreen> {
   Widget _buildMostVisitedCourseItemForList(Note response) {
     return InkResponse(
       onTap: (){
+        Navigator.push(context,MaterialPageRoute(builder: (context)=>
+            TeacherInfoDetailsScreen(
+              name: response.name,
+              email: response.email,
+              designation: response.designation,
+              department: response.department,
+              roomNo: response.room,
+              primaryNumber: response.primaryPhone,
+              secondaryNumber: response.secondaryPhone,
+              image:response.photo,
 
-        // Navigator.push(context,MaterialPageRoute(builder: (context)=>
-        //     TeacherInfoDetailsScreen(
-        //       name: response["name"].toString(),
-        //       email: response["email"].toString(),
-        //       designation: response["designation"].toString(),
-        //       department: response["department"].toString(),
-        //       roomNo: response["room"].toString(),
-        //       primaryNumber: response["primaryPhone"].toString(),
-        //       secondaryNumber: response["secondaryPhone"].toString(),
-        //       image:response["photo"].toString(),
-        //
-        //     )
-        // ));
+            )
+        ));
       },
       child:
       Container(
@@ -526,6 +575,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
              // _showToast("Success");
               var data = jsonDecode(response.body);
               _teacherInfoList = data["contacts"];
+
               _shimmerStatus=false;
 
 
@@ -533,7 +583,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                 insertData(data["contacts"]);
               });
 
-              //  _showToast(_teacherInfoList.length.toString());
+               _showToast(_teacherInfoList.length.toString());
 
             });
           }
@@ -547,10 +597,82 @@ class _ContactListScreenState extends State<ContactListScreen> {
       }
     } on SocketException catch (e) {
       Fluttertoast.cancel();
-      _showToast("No Internet Connection!");
+     // _showToast("No Internet Connection!");
     }
   }
 
+  _getDepartmentDataList() async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        // offerShimmerStatus = true;
+        try {
+          var response = await get(
+            Uri.parse(
+                'https://odd-blue-seal-gear.cyclic.app/api/department'),
+            headers: {
+              //"Authorization": "Token $accessToken",
+            },
+          );
+          // _showToast(response.statusCode.toString());
+
+          if (response.statusCode == 200) {
+            setState(() {
+              // _showToast("Success");
+              var data = jsonDecode(response.body);
+              _departmentList = data["departments"];
+              _shimmerStatus=false;
+
+
+              setState(() {
+                insertDataDepartment(data["departments"]);
+              });
+
+              //_showToast(_departmentList.length.toString());
+
+            });
+          }
+          else {
+            // Fluttertoast.cancel();
+          }
+        } catch (e) {
+          // Fluttertoast.cancel();
+
+        }
+      }
+    } on SocketException catch (e) {
+      Fluttertoast.cancel();
+    //  _showToast("No Internet Connection!");
+    }
+  }
+
+
+  void insertDataDepartment(List departmentInfoList){
+
+    // _showToast("length"+teacherInfoList.length.toString());
+
+    DepartmentDataBase.instance.deleteAll();
+
+
+    DepartmentNote departmentNote= DepartmentNote(
+      departmentName: "All",
+    );
+
+    DepartmentDataBase.instance.create( departmentNote);
+
+
+    for(int i=0;i<departmentInfoList.length;i++){
+
+
+      DepartmentNote departmentNote= DepartmentNote(
+        departmentName: departmentInfoList[i]["name"],
+      );
+
+      DepartmentDataBase.instance.create( departmentNote);
+
+    }
+    refreshDepartmentNotes();
+  }
 
   void insertData(List teacherInfoList){
 
@@ -576,14 +698,138 @@ class _ContactListScreenState extends State<ContactListScreen> {
         // id: 1,
 
       );
-      NotesDataBase.instance.create( abc);
+      NotesDataBase.instance.create(abc);
 
     }
 
     refreshNotes();
   }
 
-  _showToast1(String message) {
+  Widget userInputSelectTopic() {
+    return Container(
+        height: 55,
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 0,),
+
+        decoration: BoxDecoration(
+            color:Colors.white,
+            borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          children: [
+            Expanded(child: DropdownButton2(
+
+              //   menuMaxHeight:55,
+              value:  selectAssignmentId != null &&
+                   selectAssignmentId.isNotEmpty ?
+               selectAssignmentId : null,
+              underline:const SizedBox.shrink(),
+              hint:Row(
+                children: const [
+                  SizedBox(width: 20,),
+                  Text("Select Department",
+                      style: TextStyle(
+                          color: Colors.black38,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal)),
+                ],
+              ),
+              isExpanded: true,
+
+              /// icon: SizedBox.shrink(),
+              buttonPadding: const EdgeInsets.only(left: 0, right: 14),
+
+              items: departmentNotesList.map((list) {
+                return DropdownMenuItem(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const SizedBox(width: 20,),
+                      Expanded(child: Text(
+                          list.departmentName.toString(),
+                          textAlign: TextAlign.left,
+                          style:  TextStyle(
+                              color: Colors.black,
+                              //color: intello_text_color,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal)),),
+                      const SizedBox(width: 20,),
+
+                    ],
+                  ),
+
+                  // Text(list["country_name"].toString()),
+                  value: list.departmentName.toString(),
+                );
+
+              },
+              ).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                 notesListCopy=[];
+                  String data= selectAssignmentId=value.toString();
+
+                  if(value.toString().toLowerCase()=="all"){
+                    notesListCopy=notesList;
+
+                  }else{
+
+                    for(int i=0;i<notesList.length;i++){
+                      // _showToast(notesList[i].department);
+                      if(data.toLowerCase() == notesList[i].department.toLowerCase()){
+                        // _showToast(notesListCopy.length.toString());
+                        // _showToast("match");
+
+                        Note note=Note(
+                            name: notesList[i].name,
+                            designation: notesList[i].designation,
+                            department: notesList[i].department,
+                            primaryPhone: notesList[i].primaryPhone,
+                            secondaryPhone: notesList[i].secondaryPhone,
+                            email: notesList[i].email,
+                            pbx: notesList[i].pbx,
+                            room: notesList[i].room,
+                            details: notesList[i].details,
+                            photo: notesList[i].photo,
+                            userId: notesList[i].userId);
+                        // notesListCopy.add();
+
+                        // notesListCopy.add(notesList[i]);
+                        notesListCopy.add(note);
+                      }
+                      else{
+
+                        //  _showToast("not match");
+                      }
+
+
+                    }
+
+                  }
+
+
+                 // _showToast(notesListCopy.length.toString());
+                  setState(() {
+
+                  });
+
+
+
+
+                  // _showToast(notesListCopy.length.toString());
+                });
+
+
+                // _showToast("Id ="+submitAssignmentPageController.selectAssignmentId.value);
+              },
+
+            )
+            )
+          ],
+        )
+    );
+  }
+
+  _showToast(String message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_LONG,

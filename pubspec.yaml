@@ -48,12 +48,18 @@ dependencies:
   fluttertoast: ^8.1.1
   delayed_widget: ^1.1.2
   delayed_display: ^2.0.0
+  dropdown_button2: ^1.9.2
 
   flutter_phone_direct_caller: ^2.1.1
   #shimmer
   shimmer: ^2.0.0
+flutter_icons:
+  image_path: 'assets/images/play_store_logo.png'
+  ios: true
+  android: true
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.11.0
   flutter_test:
     sdk: flutter
 
