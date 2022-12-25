@@ -41,12 +41,12 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    NotesDataBase.instance.close();
-    super.dispose();
-
-  }
+  // @override
+  // void dispose() {
+  //   //NotesDataBase.instance.close();
+  //   super.dispose();
+  //
+  // }
 
 
 

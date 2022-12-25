@@ -17,7 +17,8 @@
  const Color shimmer_containerBgColorDark1 = Color(0xFF2B3038);
  const Color shimmer_containerShadowColorDark = Color(0x6E6E6E1A);
  const Color shimmer_containerShadowColorDark1 = Color(0x6E6E6E1A);
-
+ const  Color novalexxa_hint_text_color = Color(0xFF999B9F);
+ const Color hint_color = Color(0xFF808080);
 
  const Color teacherDetailsItemKeyTextColorColor = Color(0xFF7C7B7B);
  const Color teacherDetailsItemValueTextColorColor = Color(0xFF232323);

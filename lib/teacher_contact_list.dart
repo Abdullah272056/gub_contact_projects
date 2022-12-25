@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gub_contact/teacher_info_details.dart';
+import 'package:gub_contact/teacher_note.dart';
+import 'package:gub_contact/teacher_notes_database.dart';
 import 'package:http/http.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,8 +35,9 @@ class _ContactListScreenState extends State<ContactListScreen> {
   List _departmentList = [];
   int _darkOrLightStatus = 1;
   bool _shimmerStatus = false;
-  List<Note> notesList=[];
-  List<Note> notesListCopy=[];
+  List<TeacherNote> notesList=[];
+  List<TeacherNote> notesListCopy=[];
+  List<TeacherNote> notesListSearchAndFilter=[];
   List<DepartmentNote> departmentNotesList=[];
   bool isLoading =false;
 
@@ -44,7 +47,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
   @mustCallSuper
   initState() {
     super.initState();
-    _getMostVisitedCourseDataList();
+    _getTeacherContactList();
     _getDepartmentDataList();
     refreshNotes();
 
@@ -54,20 +57,21 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   @override
   void dispose() {
-    NotesDataBase.instance.close();
+   // NotesDataBase.instance.close();
     super.dispose();
 
   }
 
   Future refreshNotes() async {
-    NotesDataBase.instance;
+    TeacherNotesDataBase.instance;
     setState(() {
       isLoading=true;
     });
-    this.notesList=await NotesDataBase.instance.readAllNotes();
+    this.notesList=await TeacherNotesDataBase.instance.readAllNotes();
 
     this.notesListCopy=notesList;
-    _showToast("notesListCopy"+notesListCopy.length.toString());
+    this.notesListSearchAndFilter=notesList;
+   // _showToast("notesListCopy"+notesListCopy.length.toString());
 
 
     setState(() {
@@ -102,7 +106,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
         textColor: Colors.white,
         fontSize: 16.0);
   }
-
+  TextEditingController? _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,6 +159,9 @@ class _ContactListScreenState extends State<ContactListScreen> {
               ],
             ),
             userInputSelectTopic(),
+            SizedBox(height: 15,),
+            userInputSearchField(_searchController!, 'Search by name', TextInputType.text),
+
             SizedBox(
               height: MediaQuery.of(context).size.height / 30,
               // height: 30,
@@ -196,13 +203,13 @@ class _ContactListScreenState extends State<ContactListScreen> {
                   child:_shimmerStatus==false?
                   ListView.builder(
                     padding: EdgeInsets.only(top: 0),
-                      itemCount: notesListCopy==null||notesListCopy.length<=0?0:
-                      notesListCopy.length,
+                      itemCount: notesListSearchAndFilter==null||notesListSearchAndFilter.length<=0?0:
+                      notesListSearchAndFilter.length,
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return
-                          _buildMostVisitedCourseItemForList(notesListCopy[index]);
+                          _buildMostVisitedCourseItemForList(notesListSearchAndFilter[index]);
 
                       }):contactListShimmer(),
                 )
@@ -211,7 +218,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
   }
 
 
-  Widget _buildMostVisitedCourseItemForList(Note response) {
+  Widget _buildMostVisitedCourseItemForList(TeacherNote response) {
     return InkResponse(
       onTap: (){
         Navigator.push(context,MaterialPageRoute(builder: (context)=>
@@ -555,7 +562,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
         });
   }
 
-  _getMostVisitedCourseDataList() async {
+  _getTeacherContactList() async {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -583,7 +590,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                 insertData(data["contacts"]);
               });
 
-               _showToast(_teacherInfoList.length.toString());
+            //   _showToast(_teacherInfoList.length.toString());
 
             });
           }
@@ -678,11 +685,11 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
     // _showToast("length"+teacherInfoList.length.toString());
 
-    NotesDataBase.instance.deleteAll();
+    TeacherNotesDataBase.instance.deleteAll();
     for(int i=0;i<teacherInfoList.length;i++){
 
 
-      Note abc= Note(
+      TeacherNote abc= TeacherNote(
         name: teacherInfoList[i]["name"],
         designation:  teacherInfoList[i]["designation"],
         department:  teacherInfoList[i]["department"],
@@ -698,7 +705,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
         // id: 1,
 
       );
-      NotesDataBase.instance.create(abc);
+      TeacherNotesDataBase.instance.create(abc);
 
     }
 
@@ -764,22 +771,31 @@ class _ContactListScreenState extends State<ContactListScreen> {
               },
               ).toList(),
               onChanged: (String? value) {
+
+
                 setState(() {
+
+                  _searchController?.text="";
                  notesListCopy=[];
+                  notesListSearchAndFilter=[];
                   String data= selectAssignmentId=value.toString();
+
+                // notesListCopy= notesListCopy.contains("x") as List<TeacherNote>;
 
                   if(value.toString().toLowerCase()=="all"){
                     notesListCopy=notesList;
+                    notesListSearchAndFilter=notesList;
 
-                  }else{
+                  }
+                  else{
 
                     for(int i=0;i<notesList.length;i++){
                       // _showToast(notesList[i].department);
                       if(data.toLowerCase() == notesList[i].department.toLowerCase()){
-                        // _showToast(notesListCopy.length.toString());
-                        // _showToast("match");
+                       
 
-                        Note note=Note(
+
+                        TeacherNote note=TeacherNote(
                             name: notesList[i].name,
                             designation: notesList[i].designation,
                             department: notesList[i].department,
@@ -791,10 +807,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
                             details: notesList[i].details,
                             photo: notesList[i].photo,
                             userId: notesList[i].userId);
-                        // notesListCopy.add();
-
-                        // notesListCopy.add(notesList[i]);
                         notesListCopy.add(note);
+                        notesListSearchAndFilter.add(note);
                       }
                       else{
 
@@ -828,6 +842,101 @@ class _ContactListScreenState extends State<ContactListScreen> {
         )
     );
   }
+
+
+
+
+  Widget userInputSearchField(TextEditingController userInput, String hintTitle, TextInputType keyboardType) {
+    return Container(
+      height: 50,
+      alignment: Alignment.center,
+      margin: new EdgeInsets.only(left: 20,right: 20),
+      decoration: BoxDecoration(
+          color:Colors.white,
+          borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: EdgeInsets.only(left: 10.0, top: 0,bottom: 0, right: 10),
+        child: TextField(
+          controller: userInput,
+          textInputAction: TextInputAction.search,
+          autocorrect: false,
+          enableSuggestions: false,
+          cursorColor:Colors.green,
+          style: TextStyle(color:Colors.black,),
+          autofocus: false,
+          onChanged: (text){
+           setState(() {
+             String value=text.toLowerCase();
+             notesListSearchAndFilter=[];
+             if(text.isEmpty){
+
+               notesListSearchAndFilter=notesListCopy;
+               //  _getAllContactList();
+             }
+             else{
+               for(int i=0;i<notesListCopy.length;i++){
+                 if(notesListCopy[i].name.toString().toLowerCase().contains(value)){
+
+                   // TeacherNote note=TeacherNote(
+                   //     name: notesListCopy[i].name,
+                   //     designation: notesListCopy[i].designation,
+                   //     department: notesListCopy[i].department,
+                   //     primaryPhone: notesListCopy[i].primaryPhone,
+                   //     secondaryPhone: notesListCopy[i].secondaryPhone,
+                   //     email: notesListCopy[i].email,
+                   //     pbx: notesListCopy[i].pbx,
+                   //     room: notesListCopy[i].room,
+                   //     details: notesListCopy[i].details,
+                   //     photo: notesListCopy[i].photo,
+                   //     userId: notesListCopy[i].userId);
+                   //  notesListSearchAndFilter.add(note);
+                  notesListSearchAndFilter.add(notesListCopy[i]);
+                 }
+                 else{
+
+                 //  notesListSearchAndFilter=[];
+
+                   //  _showToast("not match");
+                 }
+
+
+               }
+
+             }
+           });
+
+          },
+          onSubmitted: (text){
+            if(text.isEmpty){
+             // _getAllContactList();
+            }
+            else{
+             // _getAllContactSearchList(text);
+            }
+
+          },
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            prefixIcon:  Icon(
+              Icons.search,
+              color: hint_color,
+              size: 30.0,
+            ),
+
+            hintText: hintTitle,
+
+            hintStyle:  TextStyle(fontSize: 17,
+                color:novalexxa_hint_text_color,
+                // color: Colors.intello_hint_color,
+                fontStyle: FontStyle.normal),
+          ),
+          keyboardType: keyboardType,
+        ),
+      ),
+    );
+  }
+
+
 
   _showToast(String message) {
     Fluttertoast.showToast(

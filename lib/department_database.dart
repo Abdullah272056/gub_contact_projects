@@ -69,8 +69,8 @@ class DepartmentDataBase{
 
     final maps =await db.query(
       tableNotesDepartment,
-      columns: NoteFields.values,
-      where: '${NoteFields.id}= ?',
+      columns: DepartmentNoteFields.values,
+      where: '${DepartmentNoteFields.id}= ?',
       whereArgs: [id]
     );
 
