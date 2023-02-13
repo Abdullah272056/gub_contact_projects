@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'Colors/colors.dart';
+import '../Colors/colors.dart';
 
 
 class TeacherInfoDetailsScreen extends StatefulWidget {
@@ -21,6 +21,8 @@ class TeacherInfoDetailsScreen extends StatefulWidget {
   String primaryNumber ;
   String secondaryNumber;
   String image;
+  String details;
+  String pbx;
 
 
   TeacherInfoDetailsScreen(
@@ -32,7 +34,9 @@ class TeacherInfoDetailsScreen extends StatefulWidget {
     required this.roomNo,
     required this.primaryNumber,
     required this.secondaryNumber,
-    required this.image
+    required this.image,
+    required this.details,
+    required this.pbx
     }
     ); // TeacherInfoDetailsScreen({Key? key}) : super(key: key);
 
@@ -46,7 +50,9 @@ class TeacherInfoDetailsScreen extends StatefulWidget {
           this.roomNo,
           this.primaryNumber,
           this.secondaryNumber,
-          this.image
+          this.image,
+          this.details,
+          this.pbx
       );
 }
 
@@ -61,7 +67,9 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
   String _roomNo="";
   String _primaryNumber="";
   String _secondaryNumber="";
+  String _pbx="";
   String _image="";
+  String _details="";
   _TeacherInfoDetailsScreenState(
           this._name,
          this._email,
@@ -70,7 +78,9 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
          this._roomNo,
          this._primaryNumber,
          this._secondaryNumber,
-         this._image
+         this._image,
+         this._details,
+         this._pbx
 
       );
 
@@ -159,7 +169,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
           ),
         ),
         child: Padding(
-            padding: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 20),
+            padding: EdgeInsets.only(left: 0, top:  15, right: 0, bottom: 20),
             child: Column(
               children: [
                 Expanded(
@@ -167,7 +177,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                     child: Column(
                       children: [
 
-                        _buildINfoItem("Name",_name),
+                        _buildINfoItem("Name",_name,15),
                         Container(
                           margin: EdgeInsets.only(right: 20.0, top: 0, bottom: 7, left: 20),
                           //width: 180,
@@ -501,10 +511,12 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                           ),
                         ),
 
-                        _buildINfoItem("Designation",_designation),
-                        _buildINfoItem("Department",_department),
+                        _buildINfoItem("Designation",_designation,0),
+                        _buildINfoItem("Department",_department,0),
                         // _buildINfoItem("Designation","Lecturer"),
-                        _buildINfoItem("Room",_roomNo),
+                        _buildINfoItem("Room",_roomNo,0),
+                        _buildINfoItem("Pbx",_pbx,0),
+                        _buildINfoItem("Details",_details,0)
                         // _buildINfoItem("designation","Lecturer");
 
                       ],
@@ -525,9 +537,9 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
       print(error);
     });
   }
-  Widget _buildINfoItem(String keyName, String keyValue) {
+  Widget _buildINfoItem(String keyName, String keyValue,double marginTop) {
     return Container(
-      margin: EdgeInsets.only(right: 20.0, top: 0, bottom: 7, left: 20),
+      margin: EdgeInsets.only(right: 20.0, top: marginTop, bottom: 7, left: 20),
       //width: 180,
       decoration: new BoxDecoration(
         color:Colors.white,

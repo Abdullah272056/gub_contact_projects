@@ -4,13 +4,12 @@ import 'dart:io';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gub_contact/teacher_contact_list.dart';
+import 'package:gub_contact/view/teacher_contact_list.dart';
 
-import 'note.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import 'notes_database.dart';
+import '../data_base/notes_database.dart';
 
 
 class SplashScreen extends StatefulWidget {

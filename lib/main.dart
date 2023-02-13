@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gub_contact/splash_screen.dart';
-import 'package:gub_contact/teacher_info_details.dart';
+import 'package:gub_contact/view/splash_screen.dart';
+import 'package:gub_contact/view/teacher_info_details.dart';
 
 import 'log_in.dart';
-import 'teacher_contact_list.dart';
+import 'view/teacher_contact_list.dart';
 
 
 void main() {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gub_contact/teacher_note.dart';
+import 'package:gub_contact/data_base/teacher_note.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 
-import 'note.dart';
 
 
 class TeacherNotesDataBase{

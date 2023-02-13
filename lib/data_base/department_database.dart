@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 
 import 'department_note.dart';
-import 'note.dart';
 
 
 class DepartmentDataBase{

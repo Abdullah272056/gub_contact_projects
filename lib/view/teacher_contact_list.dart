@@ -2,22 +2,23 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:delayed_widget/delayed_widget.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gub_contact/teacher_info_details.dart';
-import 'package:gub_contact/teacher_note.dart';
-import 'package:gub_contact/teacher_notes_database.dart';
+import 'package:gub_contact/view/teacher_info_details.dart';
+import 'package:gub_contact/data_base/teacher_note.dart';
+import 'package:gub_contact/data_base/teacher_notes_database.dart';
 import 'package:http/http.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'Colors/colors.dart';
-import 'department_database.dart';
-import 'department_note.dart';
-import 'note.dart';
-import 'notes_database.dart';
+import '../Colors/colors.dart';
+import '../data_base/department_database.dart';
+import '../data_base/department_note.dart';
+import '../data_base/notes_database.dart';
+import 'custom_drawer.dart';
 
 
 class ContactListScreen extends StatefulWidget {
@@ -107,9 +108,17 @@ class _ContactListScreenState extends State<ContactListScreen> {
         fontSize: 16.0);
   }
   TextEditingController? _searchController = TextEditingController();
+
+  bool _searchBoxHideShowStatus=false;
+  bool _filterBoxHideShowStatus=false;
+  final GlobalKey<ScaffoldState> _drawerKey = new GlobalKey();
+  bool isDrawerOpen = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _drawerKey,
+      drawer: CustomDrawer(),
       backgroundColor: Colors.green,
       body: Container(
 
@@ -122,22 +131,34 @@ class _ContactListScreenState extends State<ContactListScreen> {
               height: MediaQuery.of(context).size.height / 18,
               // height: 50,
             ),
+
             Flex(
               direction: Axis.horizontal,
               children: [
-                // Container(
-                //   margin: new EdgeInsets.only(left: 30),
-                //   child: InkResponse(
-                //     onTap: () {
-                //     //  Navigator.of(context).pop();
-                //     },
-                //     child: Icon(
-                //       Icons.arrow_back,
-                //       color: Colors.white,
-                //       size: 30.0,
-                //     ),
-                //   ),
-                // ),
+                Container(
+                  margin: const EdgeInsets.only(left: 30),
+                  child: InkResponse(
+                    onTap: () {
+                      if (_drawerKey.currentState!.isDrawerOpen) {
+                        setState(() {
+                          isDrawerOpen = false;
+                        });
+                        _drawerKey.currentState!.openEndDrawer();
+                        return;
+                      } else
+                        _drawerKey.currentState!.openDrawer();
+                      setState(() {
+                        isDrawerOpen = true;
+                      });
+                    },
+                    child: const Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                      size: 25.0,
+                    ),
+                  ),
+                ),
+
                 Expanded(
                     child: Container(
                       margin: new EdgeInsets.only(left: 25),
@@ -148,19 +169,110 @@ class _ContactListScreenState extends State<ContactListScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                     )),
 
 
 
+
+                Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  child: InkWell(
+
+                    onTap: () {
+                      setState(() {
+                        _searchBoxHideShowStatus=!_searchBoxHideShowStatus;
+                      });
+                    },
+                    child:  Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 25.0,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 25),
+                  child: InkWell(
+
+                    onTap: () {
+                      setState(() {
+                        _filterBoxHideShowStatus=!_filterBoxHideShowStatus;
+                      });
+
+                    },
+                    child:  Icon(
+                      Icons.group_rounded,
+                      color: Colors.white,
+                      size: 25.0,
+                    ),
+                  ),
+                ),
               ],
             ),
-            userInputSelectTopic(),
-            SizedBox(height: 15,),
-            userInputSearchField(_searchController!, 'Search by name', TextInputType.text),
+
+            // Flex(
+            //   direction: Axis.horizontal,
+            //   children: [
+            //     // Container(
+            //     //   margin: new EdgeInsets.only(left: 30),
+            //     //   child: InkResponse(
+            //     //     onTap: () {
+            //     //     //  Navigator.of(context).pop();
+            //     //     },
+            //     //     child: Icon(
+            //     //       Icons.arrow_back,
+            //     //       color: Colors.white,
+            //     //       size: 30.0,
+            //     //     ),
+            //     //   ),
+            //     // ),
+            //     Expanded(
+            //         child: Container(
+            //           margin: new EdgeInsets.only(left: 25),
+            //           child: Align(
+            //             alignment: Alignment.centerLeft,
+            //             child: Text(
+            //               "Teacher Contacts",
+            //               textAlign: TextAlign.center,
+            //               style: TextStyle(
+            //                   color: Colors.white,
+            //                   fontSize: 20,
+            //                   fontWeight: FontWeight.w400),
+            //             ),
+            //           ),
+            //         )),
+            //
+            //
+            //
+            //   ],
+            // ),
+            if(_filterBoxHideShowStatus==true)...{
+              DelayedWidget(
+                delayDuration: const Duration(milliseconds: 10),// Not required
+                animationDuration: const Duration(milliseconds: 500),// Not required
+                animation: DelayedAnimations.SLIDE_FROM_TOP,// Not required
+                child: userInputSelectTopic(),
+              ),
+
+            },
+
+            if(_searchBoxHideShowStatus==true)...{
+              SizedBox(height: 15,),
+              DelayedWidget(
+                delayDuration: const Duration(milliseconds: 10),// Not required
+                animationDuration: const Duration(milliseconds: 500),// Not required
+                animation: DelayedAnimations.SLIDE_FROM_TOP,// Not required
+                child: userInputSearchField(_searchController!, 'Search by name', TextInputType.text),
+              ),
+
+            },
+
+
+
 
             SizedBox(
               height: MediaQuery.of(context).size.height / 30,
@@ -209,7 +321,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
                       physics: ClampingScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return
-                          _buildMostVisitedCourseItemForList(notesListSearchAndFilter[index]);
+                          _buildTeacherContactItemForList(notesListSearchAndFilter[index]);
 
                       }):contactListShimmer(),
                 )
@@ -218,7 +330,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
   }
 
 
-  Widget _buildMostVisitedCourseItemForList(TeacherNote response) {
+  Widget _buildTeacherContactItemForList(TeacherNote response) {
     return InkResponse(
       onTap: (){
         Navigator.push(context,MaterialPageRoute(builder: (context)=>
@@ -231,6 +343,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
               primaryNumber: response.primaryPhone,
               secondaryNumber: response.secondaryPhone,
               image:response.photo,
+              details: response.details,
+              pbx: response.pbx,
 
             )
         ));
@@ -570,7 +684,9 @@ class _ContactListScreenState extends State<ContactListScreen> {
         try {
           var response = await get(
             Uri.parse(
-                'https://odd-blue-seal-gear.cyclic.app/api/contact'),
+                'https://gub-contact-api.onrender.com/api/contact'
+                // 'https://odd-blue-seal-gear.cyclic.app/api/contact'
+            ),
             headers: {
               //"Authorization": "Token $accessToken",
             },
@@ -616,7 +732,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
         try {
           var response = await get(
             Uri.parse(
-                'https://odd-blue-seal-gear.cyclic.app/api/department'),
+                'https://gub-contact-api.onrender.com/api/department'),
             headers: {
               //"Authorization": "Token $accessToken",
             },
@@ -694,8 +810,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
         designation:  teacherInfoList[i]["designation"],
         department:  teacherInfoList[i]["department"],
         primaryPhone:  teacherInfoList[i]["primaryPhone"],
-        // secondaryPhone:  teacherInfoList[i]["secondaryPhone"],
-        secondaryPhone:  "",
+        secondaryPhone:  teacherInfoList[i]["secondaryPhone"],
+        // secondaryPhone:  "",
         email:  teacherInfoList[i]["email"],
         pbx: teacherInfoList[i]["pbx"],
         room:  teacherInfoList[i]["room"],
@@ -714,7 +830,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   Widget userInputSelectTopic() {
     return Container(
-        height: 55,
+        height: 52,
         alignment: Alignment.center,
         margin: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 0,),
 
@@ -848,7 +964,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   Widget userInputSearchField(TextEditingController userInput, String hintTitle, TextInputType keyboardType) {
     return Container(
-      height: 50,
+      height: 52,
       alignment: Alignment.center,
       margin: new EdgeInsets.only(left: 20,right: 20),
       decoration: BoxDecoration(
@@ -920,12 +1036,12 @@ class _ContactListScreenState extends State<ContactListScreen> {
             prefixIcon:  Icon(
               Icons.search,
               color: hint_color,
-              size: 30.0,
+              size: 25.0,
             ),
 
             hintText: hintTitle,
 
-            hintStyle:  TextStyle(fontSize: 17,
+            hintStyle:  TextStyle(fontSize: 16,
                 color:novalexxa_hint_text_color,
                 // color: Colors.intello_hint_color,
                 fontStyle: FontStyle.normal),
