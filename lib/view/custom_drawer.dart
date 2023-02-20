@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'developer_info_list.dart';
+
 
 
 class CustomDrawer extends StatelessWidget {
@@ -88,6 +90,11 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 title: Text("Developer Info",
                 ),
+                onTap: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>
+                      DeveloperInfoListScreen()
+                  ));
+                },
               ),
 
 

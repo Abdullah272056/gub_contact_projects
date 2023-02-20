@@ -11,6 +11,7 @@ import 'package:gub_contact/view/teacher_info_details.dart';
 import 'package:gub_contact/data_base/teacher_note.dart';
 import 'package:gub_contact/data_base/teacher_notes_database.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,15 +45,35 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   String selectAssignmentId="";
 
+
+  String teacherLoadPrevious="0";
+
   @override
   @mustCallSuper
   initState() {
     super.initState();
-    _getTeacherContactList();
-    _getDepartmentDataList();
-    refreshNotes();
 
+    refreshNotes();
     refreshDepartmentNotes();
+
+
+    loadUserIdFromSharePref().then((_) {
+
+      if(teacherLoadPrevious!="0"){
+        _getTeacherContactList();
+        _getDepartmentDataList();
+      }
+      else{
+        _getTeacherContactList1();
+        _getDepartmentDataList();
+
+      }
+
+    });
+
+
+
+    saveUserInfo("1");
 
   }
 
@@ -295,8 +316,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
     );
   }
 
-
-
   Widget _buildBottomDesignForList() {
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -328,7 +347,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
               ],
             )));
   }
-
 
   Widget _buildTeacherContactItemForList(TeacherNote response) {
     return InkResponse(
@@ -527,7 +545,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
     );
   }
 
-
   //shimmer design
   Widget contactItemShimmer() {
     return Container(
@@ -680,7 +697,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        // offerShimmerStatus = true;
+
         try {
           var response = await get(
             Uri.parse(
@@ -691,6 +708,10 @@ class _ContactListScreenState extends State<ContactListScreen> {
               //"Authorization": "Token $accessToken",
             },
           );
+
+
+
+
          // _showToast(response.statusCode.toString());
 
           if (response.statusCode == 200) {
@@ -721,6 +742,57 @@ class _ContactListScreenState extends State<ContactListScreen> {
     } on SocketException catch (e) {
       Fluttertoast.cancel();
      // _showToast("No Internet Connection!");
+    }
+  }
+  _getTeacherContactList1() async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        showLoadingDialog(context, "Loading...");
+        try {
+          var response = await get(
+            Uri.parse(
+                'https://gub-contact-api.onrender.com/api/contact'
+              // 'https://odd-blue-seal-gear.cyclic.app/api/contact'
+            ),
+            headers: {
+              //"Authorization": "Token $accessToken",
+            },
+          );
+
+
+          Navigator.pop(context);
+
+          // _showToast(response.statusCode.toString());
+
+          if (response.statusCode == 200) {
+            setState(() {
+              // _showToast("Success");
+              var data = jsonDecode(response.body);
+              _teacherInfoList = data["contacts"];
+
+              _shimmerStatus=false;
+
+
+              setState(() {
+                insertData(data["contacts"]);
+              });
+
+              //   _showToast(_teacherInfoList.length.toString());
+
+            });
+          }
+          else {
+            // Fluttertoast.cancel();
+          }
+        } catch (e) {
+          // Fluttertoast.cancel();
+
+        }
+      }
+    } on SocketException catch (e) {
+      Fluttertoast.cancel();
+      // _showToast("No Internet Connection!");
     }
   }
 
@@ -960,8 +1032,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
   }
 
 
-
-
   Widget userInputSearchField(TextEditingController userInput, String hintTitle, TextInputType keyboardType) {
     return Container(
       height: 52,
@@ -1069,6 +1139,78 @@ class _ContactListScreenState extends State<ContactListScreen> {
   _callNumber(String phoneNumber) async {
     String number = phoneNumber;
     await FlutterPhoneDirectCaller.callNumber(number);
+  }
+
+
+  void saveUserInfo(String previousDataLoad) async {
+    try {
+      SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
+
+      sharedPreferences.setString('teacher_load_previous', previousDataLoad.toString());
+
+    } catch (e) {
+
+    }
+
+  }
+
+  ///get data from share pref
+  loadUserIdFromSharePref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    try {
+      setState(() {
+
+
+        teacherLoadPrevious = sharedPreferences.getString('teacher_load_previous')!;
+
+
+      });
+    } catch(e) {
+      //code
+    }
+
+  }
+
+
+  void showLoadingDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        // return VerificationScreen();
+        return Dialog(
+          child: Wrap(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 20, bottom: 20),
+                  child: Center(
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const CircularProgressIndicator(
+                          backgroundColor: Colors.green,
+                          color: Colors.white,
+                          strokeWidth: 5,
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          message,
+                          style: const TextStyle(fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ))
+            ],
+            // child: VerificationScreen(),
+          ),
+        );
+      },
+    );
   }
 
 }

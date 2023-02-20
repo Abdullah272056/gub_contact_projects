@@ -54,10 +54,6 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
 
 
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +68,7 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
 
 
             SizedBox(
-              height: MediaQuery.of(context).size.height / 18,
+              height: MediaQuery.of(context).size.height / 20,
               // height: 50,
             ),
 
@@ -88,7 +84,7 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                     child: const Icon(
                       Icons.arrow_back_ios,
                       color: Colors.white,
-                      size: 25.0,
+                      size: 22.0,
                     ),
                   ),
                 ),
@@ -121,7 +117,7 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
 
 
             SizedBox(
-              height: MediaQuery.of(context).size.height / 30,
+              height: MediaQuery.of(context).size.height / 35,
               // height: 30,
             ),
 
@@ -158,17 +154,49 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
             child: Column(
               children: [
                 Expanded(
-                  child:
+                  child:SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _buildTeacherContactItemForList(
+                          image: 'https://avatars.githubusercontent.com/u/47354776?v=4',
+                          name: 'Abdullah',
+                          designation: 'Mobile App Developer (iOS & Android)',
+                          department: 'CSE',
+                          sId: '212015049',
+                          phone: '01994-215664',
+                          email: 'abdullah272056@gmail.com',
+                          studentId: '212015049',
+                          linkedinLink: 'https://www.linkedin.com/in/abdullah-al-aman-922013194/',
+                        ),
 
-                    _buildTeacherContactItemForList(
-                        image: '',
-                        name: 'Abdullah',
-                        designation: 'Mobile Apps Developer (iOs & Android)',
-                        department: 'CSE',
-                        sId: '212015049',
-                        phone: '01994215664',
-                        email: 'abdullah272056@gmail.com'
+                        _buildTeacherContactItemForList(
+                          image: 'https://avatars.githubusercontent.com/u/35170851?v=4',
+                          name: 'Abdullah Naser',
+                          designation: 'Full Stack Developer',
+                          department: 'CSE',
+                          sId: '212015027',
+                          phone: '01521-413791',
+                          email: 'abdnaser.exe@gmail.com',
+                          studentId: '212015027',
+                          linkedinLink: 'https://www.linkedin.com/in/naser4100/',
+                        ),
+
+                        _buildTeacherContactItemForList(
+                          image: 'https://avatars.githubusercontent.com/u/52525487?v=4',
+                          name: 'Md.Shohedul Islam',
+                          designation: 'Full Stack Developer',
+                          department: 'CSE',
+                          sId: '2120150xx',
+                          phone: 'xxxx-xxxxxxx',
+                          email: 'xxxxxx@gmail.com',
+                          studentId: 'xxxxxx',
+                          linkedinLink: 'https://www.linkedin.com/in/xxxxxx/',
+                        ),
+                      ],
                     ),
+                  )
+
+
 
 
                 )
@@ -185,7 +213,9 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
           required String department,
           required String sId,
           required String phone,
-          required String email
+          required String email,
+          required String studentId,
+          required String linkedinLink,
         }
       ) {
     return InkResponse(
@@ -194,9 +224,9 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
       },
       child:
       Container(
-        margin: EdgeInsets.only(right: 20.0, top: 0, bottom: 10, left: 20),
+        margin: EdgeInsets.only(right: 15.0, top: 0, bottom: 10, left: 15),
         //width: 180,
-        decoration: new BoxDecoration(
+        decoration: BoxDecoration(
           color:Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [BoxShadow(
@@ -213,41 +243,51 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
         ),
         //   height: 150,
         child:Container(
-          margin: EdgeInsets.only(right: 10.0, top: 10, bottom: 10, left: 10),
+          margin: EdgeInsets.only(right: 10.0, top: 10, bottom: 10, left: 20),
           //color: Colors.white,
           child: SizedBox(
             child: Flex(
               direction: Axis.horizontal,
               children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: SizedBox(
-                      height: 90,
-                      width: 90,
-                      child:FadeInImage.assetNetwork(
-                        height: 90,
-                        width: 90,
-                        fit: BoxFit.fill,
-                        placeholder: 'assets/images/images_avater.png',
-                        image:image,
-                        imageErrorBuilder: (context, url, error) =>
-                            Image.asset(
-                              'assets/images/images_avater.png',
-                              fit: BoxFit.fill,
-                            ),
-                      ),
-                    )),
-                SizedBox(
-                  width: 15,
-                ),
+
                 Expanded(
                     child:Container(
-                      height: 90,
+                    //  height: 90,
                       child: Column(
 
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         // direction: Axis.vertical,
                         children: [
+
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children:  [
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: SizedBox(
+                                      height: 70,
+                                      width: 70,
+                                      child:FadeInImage.assetNetwork(
+                                        height: 70,
+                                        width: 70,
+                                        fit: BoxFit.fill,
+                                        placeholder: 'assets/images/images_avater.png',
+                                        image:image,
+                                        imageErrorBuilder: (context, url, error) =>
+                                            Image.asset(
+                                              'assets/images/images_avater.png',
+                                              fit: BoxFit.fill,
+                                            ),
+                                      ),
+                                    )),
+
+                              ],
+                            ),
+
+                          ),
+                          SizedBox(height: 4,),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Flex(
@@ -255,24 +295,25 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    name.toString(),
+                                   "Name: "+ name.toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
                                     softWrap: false,
                                     maxLines: 1,
                                   ),
 
 
                                 ),
-                                SizedBox(width: 5,),
+
 
                               ],
                             ),
 
                           ),
+                          SizedBox(height: 2,),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Flex(
@@ -280,49 +321,136 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    designation.toString(),
+                                    "Designation: "+designation.toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
                                     softWrap: false,
                                     maxLines: 1,
                                   ),
 
 
                                 ),
-                                SizedBox(width: 5,),
+
 
                               ],
                             ),
 
                           ),
+                          SizedBox(height: 2,),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Flex(
                               direction: Axis.horizontal,
                               children:  [
                                 Expanded(
-                                  child: Text(
-                                     phone.toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                    softWrap: false,
-                                    maxLines: 1,
+                                  child:InkWell(
+
+                            child: Text(
+                                "Phone: "+ phone.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color:Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                            softWrap: false,
+                            maxLines: 1,
+                          ),
+            onTap: (){
+              _callNumber(phone);
+
+            },
+          )
+
+
+
+
+                                ),
+
+
+                              ],
+                            ),
+
+                          ),
+                          SizedBox(height: 2,),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children:  [
+                                Expanded(
+                                  child: InkWell(
+
+                                    child: Text(
+                                      "Email: "+ email.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color:Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                      softWrap: false,
+                                      maxLines: 1,
+                                    ),
+                                    onTap: () async {
+
+                                      // String email = Uri.encodeComponent("mail@fluttercampus.com");
+                                      // String subject = Uri.encodeComponent("Hello Flutter");
+                                      // String body = Uri.encodeComponent("Hi! I'm Flutter Developer");
+
+                                      Uri mail = Uri.parse("mailto:$email");
+
+                                      await launchUrl(mail);
+
+                                    },
+                                  ),
+
+
+
+
+
+                                ),
+
+
+                              ],
+                            ),
+
+                          ),
+                          SizedBox(height: 2,),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children:  [
+                                Expanded(
+                                  child: InkWell(
+
+                                    child: Text(
+                                      "Linkedin: "+ linkedinLink.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color:Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
+                                      softWrap: false,
+                                      maxLines: 1,
+                                    ),
+                                    onTap: (){
+                                      _launchUrl(linkedinLink);
+
+                                    },
                                   ),
 
 
                                 ),
-                                SizedBox(width: 5,),
+
 
                               ],
                             ),
 
                           ),
+                          SizedBox(height: 2,),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Flex(
@@ -330,44 +458,44 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                               children:  [
                                 Expanded(
                                   child: Text(
-                                    email.toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                                    softWrap: false,
-                                    maxLines: 1,
-                                  ),
-
-
-                                ),
-                                SizedBox(width: 5,),
-
-                              ],
-                            ),
-
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Flex(
-                              direction: Axis.horizontal,
-                              children:  [
-                                Expanded(
-                                  child: Text(
-                                    department.toString()
+                                    "Department: "+ department.toString()
                                     ,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
                                     softWrap: false,
                                     maxLines: 1,
                                   ),
 
                                 ),
-                                SizedBox(width: 5,),
+
+
+                              ],
+                            ),
+
+                          ),
+                          SizedBox(height: 2,),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children:  [
+                                Expanded(
+                                  child: Text(
+                                    "Student Id: "+ studentId.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color:Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                    softWrap: false,
+                                    maxLines: 1,
+                                  ),
+
+                                ),
+
 
                               ],
                             ),
@@ -394,7 +522,12 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
 
 
 
-
+  Future<void> _launchUrl(String urlString) async {
+    Uri url=Uri.parse(urlString);
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
+    }
+  }
 
 
   _callNumber(String phoneNumber) async {
