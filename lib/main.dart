@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gub_contact/view/splash_screen.dart';
 import 'package:gub_contact/view/teacher_info_details.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'log_in.dart';
 import 'view/teacher_contact_list.dart';
 
 
-void main() {
+Future<void> main() async {
+
   runApp( MyApp());
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     // systemNavigationBarColor: Color(0xFF00BE56),

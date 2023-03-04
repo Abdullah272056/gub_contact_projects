@@ -150,13 +150,14 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
           ),
         ),
         child: Padding(
-            padding: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 20),
+            padding: EdgeInsets.only(left: 0, top: 10, right: 0, bottom: 20),
             child: Column(
               children: [
                 Expanded(
                   child:SingleChildScrollView(
                     child: Column(
                       children: [
+                        SizedBox(height: 10,),
                         _buildTeacherContactItemForList(
                           image: 'https://avatars.githubusercontent.com/u/47354776?v=4',
                           name: 'Abdullah',
@@ -186,11 +187,11 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                           name: 'Md.Shohedul Islam',
                           designation: 'Full Stack Developer',
                           department: 'CSE',
-                          sId: '2120150xx',
-                          phone: 'xxxx-xxxxxxx',
-                          email: 'xxxxxx@gmail.com',
-                          studentId: 'xxxxxx',
-                          linkedinLink: 'https://www.linkedin.com/in/xxxxxx/',
+                          sId: '212015028',
+                          phone: '01303-029065',
+                          email: 'shohedul350@gmail.com',
+                          studentId: '212015028',
+                          linkedinLink: 'https://www.linkedin.com/in/shohedul350/',
                         ),
                       ],
                     ),
@@ -264,6 +265,7 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                             child: Flex(
                               direction: Axis.horizontal,
                               children:  [
+
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: SizedBox(

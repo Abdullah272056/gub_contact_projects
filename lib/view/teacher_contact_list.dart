@@ -46,7 +46,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
   String selectAssignmentId="";
 
 
-  String teacherLoadPrevious="0";
+  String teacherLoadPrevious="";
 
   @override
   @mustCallSuper
@@ -59,7 +59,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
     loadUserIdFromSharePref().then((_) {
 
-      if(teacherLoadPrevious!="0"){
+      if(teacherLoadPrevious=="1"){
         _getTeacherContactList();
         _getDepartmentDataList();
       }
@@ -73,7 +73,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
 
 
-    saveUserInfo("1");
+
 
   }
 
@@ -118,16 +118,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
   }
 
-  _showToas(String message) {
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
+
   TextEditingController? _searchController = TextEditingController();
 
   bool _searchBoxHideShowStatus=false;
@@ -587,8 +578,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
                       width: 100,
                       color:_darkOrLightStatus == 1 ? Colors.white:shimmer_containerBgColorDark,
                     )),
-
-
               ),
 
               SizedBox(
@@ -654,8 +643,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
                             ),
                           ),
                         ),
-
-
                       ],
                     ),
                   )),
@@ -679,9 +666,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
         ),
       ),
     );
-
-
   }
+
   Widget contactListShimmer() {
     return  ListView.builder(
         padding: EdgeInsets.zero,
@@ -720,11 +706,12 @@ class _ContactListScreenState extends State<ContactListScreen> {
               var data = jsonDecode(response.body);
               _teacherInfoList = data["contacts"];
 
-              _shimmerStatus=false;
+           //   _shimmerStatus=false;
 
 
               setState(() {
                 insertData(data["contacts"]);
+
               });
 
             //   _showToast(_teacherInfoList.length.toString());
@@ -744,6 +731,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
      // _showToast("No Internet Connection!");
     }
   }
+
   _getTeacherContactList1() async {
     try {
       final result = await InternetAddress.lookup('example.com');
@@ -775,7 +763,9 @@ class _ContactListScreenState extends State<ContactListScreen> {
 
 
               setState(() {
+                saveUserInfo("1");
                 insertData(data["contacts"]);
+
               });
 
               //   _showToast(_teacherInfoList.length.toString());
@@ -841,7 +831,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
     }
   }
 
-
   void insertDataDepartment(List departmentInfoList){
 
     // _showToast("length"+teacherInfoList.length.toString());
@@ -870,8 +859,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
   }
 
   void insertData(List teacherInfoList){
-
-    // _showToast("length"+teacherInfoList.length.toString());
 
     TeacherNotesDataBase.instance.deleteAll();
     for(int i=0;i<teacherInfoList.length;i++){
@@ -1031,7 +1018,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
     );
   }
 
-
   Widget userInputSearchField(TextEditingController userInput, String hintTitle, TextInputType keyboardType) {
     return Container(
       height: 52,
@@ -1122,8 +1108,6 @@ class _ContactListScreenState extends State<ContactListScreen> {
     );
   }
 
-
-
   _showToast(String message) {
     Fluttertoast.showToast(
         msg: message,
@@ -1135,18 +1119,15 @@ class _ContactListScreenState extends State<ContactListScreen> {
         fontSize: 16.0);
   }
 
-
   _callNumber(String phoneNumber) async {
     String number = phoneNumber;
     await FlutterPhoneDirectCaller.callNumber(number);
   }
 
-
   void saveUserInfo(String previousDataLoad) async {
     try {
       SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
-
       sharedPreferences.setString('teacher_load_previous', previousDataLoad.toString());
 
     } catch (e) {
@@ -1160,18 +1141,13 @@ class _ContactListScreenState extends State<ContactListScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     try {
       setState(() {
-
-
         teacherLoadPrevious = sharedPreferences.getString('teacher_load_previous')!;
-
-
       });
     } catch(e) {
       //code
     }
 
   }
-
 
   void showLoadingDialog(BuildContext context, String message) {
     showDialog(
