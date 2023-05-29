@@ -64,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
               ),
 
               ListTile(
-                leading: Icon(Icons.info_outline,
+                leading: Icon(Icons.insert_drive_file_rounded,
                   color: Colors.green,
                 ),
                 title: Text("Notice Board",
@@ -85,10 +85,10 @@ class CustomDrawer extends StatelessWidget {
               ),
 
               ListTile(
-                leading: Icon(Icons.developer_board,
+                leading: Icon(Icons.info,
                   color: Colors.green,
                 ),
-                title: Text("Developer Info",
+                title: Text("About",
                 ),
                 onTap: (){
                   Navigator.push(context,MaterialPageRoute(builder: (context)=>

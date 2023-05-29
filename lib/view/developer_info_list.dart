@@ -92,10 +92,10 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
                 Expanded(
                     child: Container(
                       margin: new EdgeInsets.only(left: 25),
-                      child: Align(
+                      child: const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Developer Info",
+                          "About",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
@@ -142,64 +142,90 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
   Widget _buildBottomDesignForList() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        decoration:  BoxDecoration(
+        decoration:  const BoxDecoration(
           color:Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
             topRight: Radius.circular(30.0),
           ),
         ),
-        child: Padding(
+        child:    Padding(
             padding: EdgeInsets.only(left: 0, top: 10, right: 0, bottom: 20),
             child: Column(
               children: [
                 Expanded(
-                  child:SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 10,),
-                        _buildTeacherContactItemForList(
-                          image: 'https://avatars.githubusercontent.com/u/47354776?v=4',
-                          name: 'Abdullah',
-                          designation: 'Mobile App Developer (iOS & Android)',
-                          department: 'CSE',
-                          sId: '212015049',
-                          phone: '01994-215664',
-                          email: 'abdullah272056@gmail.com',
-                          studentId: '212015049',
-                          linkedinLink: 'https://www.linkedin.com/in/abdullah-al-aman-922013194/',
-                        ),
+                  child:Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
 
-                        _buildTeacherContactItemForList(
-                          image: 'https://avatars.githubusercontent.com/u/35170851?v=4',
-                          name: 'Abdullah Naser',
-                          designation: 'Full Stack Developer',
-                          department: 'CSE',
-                          sId: '212015027',
-                          phone: '01521-413791',
-                          email: 'abdnaser.exe@gmail.com',
-                          studentId: '212015027',
-                          linkedinLink: 'https://www.linkedin.com/in/naser4100/',
+                      Text(
+                        "Developed by",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 15,),
+                      Text(
+                        "Batch- 212,\nWeekend CSE Students.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(height: 25,),
+                      InkWell(
+                        onTap: (){
+                          _launchUrl("https://github.com/Abdullah272056/gub_contact_projects.git");
+                        },
+                        child:  const Text(
+                          "More...",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500),
                         ),
-
-                        _buildTeacherContactItemForList(
-                          image: 'https://avatars.githubusercontent.com/u/52525487?v=4',
-                          name: 'Md.Shohedul Islam',
-                          designation: 'Full Stack Developer',
-                          department: 'CSE',
-                          sId: '212015028',
-                          phone: '01303-029065',
-                          email: 'shohedul350@gmail.com',
-                          studentId: '212015028',
-                          linkedinLink: 'https://www.linkedin.com/in/shohedul350/',
-                        ),
-                      ],
-                    ),
+                      )
+                      // _buildTeacherContactItemForList(
+                      //   image: 'https://avatars.githubusercontent.com/u/47354776?v=4',
+                      //   name: 'Abdullah',
+                      //   designation: 'Mobile App Developer (iOS & Android)',
+                      //   department: 'CSE',
+                      //   sId: '212015049',
+                      //   phone: '01994-215664',
+                      //   email: 'abdullah272056@gmail.com',
+                      //   studentId: '212015049',
+                      //   linkedinLink: 'https://www.linkedin.com/in/abdullah-al-aman-922013194/',
+                      // ),
+                      //
+                      // _buildTeacherContactItemForList(
+                      //   image: 'https://avatars.githubusercontent.com/u/35170851?v=4',
+                      //   name: 'Abdullah Naser',
+                      //   designation: 'Full Stack Developer',
+                      //   department: 'CSE',
+                      //   sId: '212015027',
+                      //   phone: '01521-413791',
+                      //   email: 'abdnaser.exe@gmail.com',
+                      //   studentId: '212015027',
+                      //   linkedinLink: 'https://www.linkedin.com/in/naser4100/',
+                      // ),
+                      //
+                      // _buildTeacherContactItemForList(
+                      //   image: 'https://avatars.githubusercontent.com/u/52525487?v=4',
+                      //   name: 'Md.Shohedul Islam',
+                      //   designation: 'Full Stack Developer',
+                      //   department: 'CSE',
+                      //   sId: '212015028',
+                      //   phone: '01303-029065',
+                      //   email: 'shohedul350@gmail.com',
+                      //   studentId: '212015028',
+                      //   linkedinLink: 'https://www.linkedin.com/in/shohedul350/',
+                      // ),
+                    ],
                   )
-
-
-
-
                 )
               ],
             )));
