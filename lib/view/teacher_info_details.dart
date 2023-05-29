@@ -251,9 +251,9 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                                     child: Text(
                                                       _email,
                                                       overflow: TextOverflow.ellipsis,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color:teacherDetailsItemValueTextColorColor,
-                                                          fontSize: 13,
+                                                          fontSize: 15,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
                                                       maxLines: 1,
@@ -298,7 +298,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                         Container(
                           margin: EdgeInsets.only(right: 20.0, top: 0, bottom: 10, left: 20),
                           //width: 180,
-                          decoration: new BoxDecoration(
+                          decoration: BoxDecoration(
                             color:Colors.white,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [BoxShadow(
@@ -307,7 +307,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                 //  blurRadius: 20.0, // soften the shadow
                                 blurRadius:20, // soften the shadow
                                 spreadRadius: 0.0, //extend the shadow
-                                offset: Offset(
+                                offset: const Offset(
                                   2.0, // Move to right 10  horizontally
                                   1.0, // Move to bottom 10 Vertically
                                 )
@@ -322,7 +322,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                 direction: Axis.horizontal,
                                 children: [
 
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 15,
                                   ),
                                   Expanded(
@@ -333,7 +333,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           // direction: Axis.vertical,
                                           children: [
-                                            Align(
+                                            const Align(
                                               alignment: Alignment.centerLeft,
                                               child: Flex(
                                                 direction: Axis.horizontal,
@@ -371,7 +371,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           color:teacherDetailsItemValueTextColorColor,
-                                                          fontSize: 13,
+                                                          fontSize: 15,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
                                                       maxLines: 1,
@@ -478,7 +478,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           color:teacherDetailsItemValueTextColorColor,
-                                                          fontSize: 13,
+                                                          fontSize: 15,
                                                           fontWeight: FontWeight.w500),
                                                       softWrap: false,
                                                       maxLines: 1,

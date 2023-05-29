@@ -450,8 +450,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
                                     softWrap: false,
                                     maxLines: 1,
                                   ),
@@ -475,8 +475,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
                                     softWrap: false,
                                     maxLines: 1,
                                   ),
@@ -501,8 +501,8 @@ class _ContactListScreenState extends State<ContactListScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color:Colors.black,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
                                     softWrap: false,
                                     maxLines: 1,
                                   ),
