@@ -5,8 +5,7 @@ import 'dart:io';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gub_contact/view/teacher_info_details.dart';
 import 'package:gub_contact/data_base/teacher_note.dart';
 import 'package:gub_contact/data_base/teacher_notes_database.dart';
@@ -559,8 +558,8 @@ class _DeveloperInfoListScreenState extends State<DeveloperInfoListScreen> {
 
 
   _callNumber(String phoneNumber) async {
-    String number = phoneNumber;
-    await FlutterPhoneDirectCaller.callNumber(number);
+    // String number = phoneNumber;
+    // await FlutterPhoneDirectCaller.callNumber(number);
   }
 
 }

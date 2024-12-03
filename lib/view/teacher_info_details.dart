@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:email_launcher/email_launcher.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -526,17 +526,7 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
               ],
             )));
   }
-  void _launchEmail() async {
-    List<String> to = "abdullah@gmail.com".split(',');
-    Email email = Email(to: to,);
-    EmailLauncher.launch(email).then((value) {
-      // success
-      print(value);
-    }).catchError((error) {
-      _showToast("error");
-      print(error);
-    });
-  }
+
   Widget _buildINfoItem(String keyName, String keyValue,double marginTop) {
     return Container(
       margin: EdgeInsets.only(right: 20.0, top: marginTop, bottom: 7, left: 20),
@@ -709,8 +699,8 @@ class _TeacherInfoDetailsScreenState extends State<TeacherInfoDetailsScreen> {
   // }
 
   _callNumber(String phoneNumber) async {
-    String number = phoneNumber;
-    await FlutterPhoneDirectCaller.callNumber(number);
+    // String number = phoneNumber;
+    // await FlutterPhoneDirectCaller.callNumber(number);
   }
 
 }
